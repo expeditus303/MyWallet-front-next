@@ -1,10 +1,12 @@
-import './globals.css'
+import AuthContext from "@/contexts/AuthContext";
+import "./globals.css";
 import { Raleway, Roboto_Mono } from "next/font/google";
+import AuthProvider from "@/contexts/AuthContext";
 
 export const metadata = {
-  title: 'MyWallet',
-  description: 'Your digital wallet to track incomes and expenses',
-}
+  title: "MyWallet",
+  description: "Your digital wallet to track incomes and expenses",
+};
 
 const raleway = Raleway({
   subsets: ["latin"],
@@ -19,7 +21,9 @@ export const robotoMono = Roboto_Mono({
 export default function RootLayout({ children }) {
   return (
     <html lang="en">
-      <body className={`bg-purple-700 text-zinc-50 h-screen w-screen flex flex-col items-center justify-center`}>{children}</body>
+      <body className={`bg-purple-700 text-zinc-50 h-screen w-screen flex flex-col items-center justify-center`}>
+        <AuthProvider>{children}</AuthProvider>
+      </body>
     </html>
-  )
+  );
 }

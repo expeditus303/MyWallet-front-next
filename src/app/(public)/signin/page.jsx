@@ -1,21 +1,35 @@
 "use client";
 
-import { useState } from "react";
+import { Create } from "@/contexts/AuthContext";
+import api from "@/services/api";
+import { useContext, useState } from "react";
 
 export default function SignIn() {
-  const [userInfo, setUserInfo] = useState({
+
+  const {user, setUser } = useContext(Create)
+
+  const [formData, setFormData] = useState({
     email: "",
     password: "",
   });
 
   function handleEvent(event) {
-    setUserInfo({ ...userInfo, [event.target.name]: event.target.value });
+    setFormData({ ...formData, [event.target.name]: event.target.value });
   }
 
-  function submit(event) {
+  async function submit(event) {
     event.preventDefault()
-    console.log(userInfo)
+
+    try {
+      const promise = await api.signIn(formData)
+      return setUser(promise.data)
+    } catch (err) {
+      console.log(err.response.data)
+    }  
   }
+
+  console.log("aqui")
+  console.log(user)
 
   return (
     <>
@@ -28,7 +42,7 @@ export default function SignIn() {
           type="email"
           name="email"
           placeholder="email"
-          value={userInfo.email}
+          value={formData.email}
           onChange={handleEvent}
         />
         <input
@@ -36,7 +50,7 @@ export default function SignIn() {
           type="password"
           name="password"
           placeholder="password"
-          value={userInfo.password}
+          value={formData.password}
           onChange={handleEvent}
         />
         <button
@@ -47,7 +61,7 @@ export default function SignIn() {
         </button>
       </form>
       <p className="text-sm">
-        <a href="http://">First time? Sign up!</a>
+        <a href="/signup">First time? Sign up!</a>
       </p>
     </>
   );
